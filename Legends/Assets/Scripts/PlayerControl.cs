@@ -14,22 +14,29 @@ public class PlayerControl : MonoBehaviour
 
     private CharacterController characterController;
     private Vector3 targetPosition;
+    private Animator animator;
     
     // Start is called before the first frame update
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         targetPosition = transform.position;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         float distToTarget = Vector3.Distance(targetPosition, transform.position);
-        if (distToTarget > 1)
+        if (distToTarget > 0.5f)
         {
             Vector3 direction = Vector3.Normalize(targetPosition - transform.position);
             characterController.Move(direction * moveSpeed * Time.deltaTime);
+            animator.SetBool("running", true);
+        }
+        else
+        {
+            animator.SetBool("running", false);
         }
 
         if (Input.GetMouseButton(0))
